@@ -45,16 +45,22 @@ the dashboard.
 
 ## Publishing / sharing a live URL
 
-To share a working link instead of just localhost:
+This repo includes [render.yaml](render.yaml), a Render Blueprint that deploys
+both pieces in one step:
 
-1. Push this repo to GitHub.
-2. Deploy `server/` to a Node host (Render, Railway, Fly.io, etc.) — set the
-   `JWT_SECRET` environment variable there instead of using the dev default.
-3. Deploy `client/` to a static host (Vercel, Netlify, GitHub Pages) with
-   `npm run build`, and point its API calls at the deployed server URL
-   (update the `proxy` target in `vite.config.js` or add a `VITE_API_URL`
-   env var).
-4. Share the deployed client URL as the login link.
+1. Go to https://dashboard.render.com → **New +** → **Blueprint**.
+2. Connect your GitHub account and select the `soumalya-03/J-J` repo.
+3. Render reads `render.yaml` and creates two services:
+   - `mentor-login-api` — the Express API (Node web service)
+   - `mentor-login-client` — the React app (static site), wired to call the
+     API automatically via the `VITE_API_HOST` build variable.
+4. Click **Apply** / **Create**. After both services finish deploying, open
+   the `mentor-login-client` service URL (something like
+   `https://mentor-login-client.onrender.com`) — that's your public login
+   link.
+
+Free Render web services spin down after inactivity, so the first request
+after idling may take ~30-60s to respond while it wakes up.
 
 ## Security notes
 
